@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { ScrollArea, Table, Text } from '@mantine/core';
+import { Group, ScrollArea, Table, Text } from '@mantine/core';
+import { IconFileDescription, IconFolder } from '@tabler/icons';
 import { File, useFiles } from '../../lib/hooks/useFiles';
 
 interface FileTableProps {
@@ -11,11 +12,26 @@ interface FileTableProps {
 const FileTable = ({ data, onFileClick }: FileTableProps) => {
   const rows = data.map((e) => (
     <tr key={e.name}>
-      {e.type === 'dir' ? (
-        <td onClick={() => onFileClick(e)}>{e.name}</td>
-      ) : (
-        <td>{e.name}</td>
-      )}
+      <td>
+        {e.type === 'dir' ? (
+          <Group
+            onClick={() => onFileClick(e)}
+            sx={{
+              '&:hover': {
+                cursor: 'pointer',
+              },
+            }}
+          >
+            <IconFolder size={25} stroke={1.5} />
+            <Text>{e.name}</Text>
+          </Group>
+        ) : (
+          <Group>
+            <IconFileDescription size={25} stroke={1.5} />
+            <Text size="sm">{e.name}</Text>
+          </Group>
+        )}
+      </td>
     </tr>
   ));
 
@@ -48,9 +64,6 @@ const Files = () => {
 
   return (
     <>
-      <div>f</div>
-      <Text>Files</Text>
-
       <div>
         {files && <FileTable data={files.files} onFileClick={onFileClick} />}
       </div>
