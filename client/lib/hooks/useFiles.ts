@@ -7,7 +7,7 @@ export type File = {
 };
 
 const getFiles = async (url: string) => {
-  const res = await http.get<{ files: File[] }>('/ping', {
+  const res = await http.get<{ files: File[] }>('/files', {
     params: {
       f: url,
     },
