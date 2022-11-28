@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useHtml } from '../../lib/hooks/useHtml';
+import DOMPurify from 'dompurify';
 
 const HtmlPage = () => {
   const router = useRouter();
@@ -15,7 +16,7 @@ const HtmlPage = () => {
 
   return (
     <>
-      <div dangerouslySetInnerHTML={{ __html: data }} />
+      <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(data) }} />
     </>
   );
 };
