@@ -1,11 +1,16 @@
+import axios from 'axios';
 import useSWR from 'swr';
-import { http } from '../api/http';
+// import { http } from '../api/http';
 
 const getHtmlFile = async (f: string) => {
-  const res = await http.get('/file/html', {
+  const host = localStorage.getItem('host')?.replace(/(^"|"$)/g, '');
+
+  const res = await axios.get('/file/html', {
+    baseURL: host + '/api/v1',
     params: { f },
     responseType: 'text',
   });
+
   return res.data;
 };
 

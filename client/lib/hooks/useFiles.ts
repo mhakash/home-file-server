@@ -1,5 +1,5 @@
+import axios from 'axios';
 import useSWR from 'swr';
-import { http } from '../api/http';
 
 export type File = {
   name: string;
@@ -8,7 +8,10 @@ export type File = {
 };
 
 const getFiles = async (url: string) => {
-  const res = await http.get<{ files: File[] }>('/files', {
+  const host = localStorage.getItem('host')?.replace(/(^"|"$)/g, '');
+
+  const res = await axios.get<{ files: File[] }>('/files', {
+    baseURL: host + '/api/v1',
     params: {
       f: url,
     },

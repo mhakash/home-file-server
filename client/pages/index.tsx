@@ -1,25 +1,27 @@
-import { Group, Text, useMantineTheme } from "@mantine/core";
-import { IconUpload, IconFile, IconX } from "@tabler/icons";
-import { Dropzone, DropzoneProps, FileWithPath } from "@mantine/dropzone";
-import { useState } from "react";
+import { Button, Group, Input, Text, useMantineTheme } from '@mantine/core';
+import { IconUpload, IconFile, IconX } from '@tabler/icons';
+import { Dropzone, DropzoneProps, FileWithPath } from '@mantine/dropzone';
+import { useState } from 'react';
 
-import axios from "axios";
+import axios from 'axios';
+import { useInputState, useLocalStorage } from '@mantine/hooks';
+import Link from 'next/link';
 
 const http = axios.create({
-  baseURL: "http://localhost:3001",
+  baseURL: 'http://localhost:3001',
   headers: {
-    "Content-type": "application/json",
+    'Content-type': 'application/json',
   },
 });
 
 const upload = (file: any, onUploadProgress: any) => {
   let formData = new FormData();
 
-  formData.append("file", file);
+  formData.append('file', file);
 
-  return http.post("/", formData, {
+  return http.post('/', formData, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
     onUploadProgress,
   });
@@ -33,7 +35,7 @@ function BaseDemo(props: Partial<DropzoneProps>) {
   const onFileUpload = () => {
     let currentFile = allFiles[0];
     if (!currentFile) {
-      console.log("no file");
+      console.log('no file');
       return;
     }
 
@@ -63,7 +65,7 @@ function BaseDemo(props: Partial<DropzoneProps>) {
     <>
       <Dropzone
         onDrop={(files) => setFiles(files)}
-        onReject={(files) => console.log("rejected files", files)}
+        onReject={(files) => console.log('rejected files', files)}
         // maxSize={3 * 1024 ** 2}
         // accept={IMAGE_MIME_TYPE}
         {...props}
@@ -71,7 +73,7 @@ function BaseDemo(props: Partial<DropzoneProps>) {
         <Group
           position="center"
           spacing="xl"
-          style={{ minHeight: 220, pointerEvents: "none" }}
+          style={{ minHeight: 220, pointerEvents: 'none' }}
         >
           <Dropzone.Accept>
             <IconUpload
@@ -79,7 +81,7 @@ function BaseDemo(props: Partial<DropzoneProps>) {
               stroke={1.5}
               color={
                 theme.colors[theme.primaryColor][
-                  theme.colorScheme === "dark" ? 4 : 6
+                  theme.colorScheme === 'dark' ? 4 : 6
                 ]
               }
             />
@@ -88,7 +90,7 @@ function BaseDemo(props: Partial<DropzoneProps>) {
             <IconX
               size={50}
               stroke={1.5}
-              color={theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]}
+              color={theme.colors.red[theme.colorScheme === 'dark' ? 4 : 6]}
             />
           </Dropzone.Reject>
           <Dropzone.Idle>
@@ -118,11 +120,32 @@ function BaseDemo(props: Partial<DropzoneProps>) {
   );
 }
 export default function Home() {
+  const [inputHost, setInputHost] = useInputState('');
+  const [host, setHost] = useLocalStorage({ key: 'host', defaultValue: '' });
+
   return (
     <div>
-      <div>hello</div>
-      <div style={{ maxWidth: "800px" }}>
+      <div>host: {host}</div>
+      {/* <div style={{ maxWidth: "800px" }}>
         <BaseDemo />
+      </div> */}
+      <Link href={'/files'}>View files</Link>
+
+      <div className="max-w-xl p-4">
+        <Input
+          type="text"
+          value={inputHost}
+          onChange={setInputHost}
+          className="py-2"
+        />
+        <Button
+          onClick={() => {
+            setHost(inputHost);
+            console.log(inputHost);
+          }}
+        >
+          Apply host
+        </Button>
       </div>
     </div>
   );

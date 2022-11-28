@@ -47,7 +47,7 @@ export const getFiles = async (pathURL?: string) => {
   try {
     const files = await fs.readdir(fullPathURL);
 
-    const fileWithTypes = await Promise.all(
+    const filesInfo = await Promise.all(
       files.map(async (f) => {
         const fullDir = path.join(fullPathURL, f);
         const stats = await fs.stat(fullDir);
@@ -65,11 +65,12 @@ export const getFiles = async (pathURL?: string) => {
         return val;
       })
     );
-
-    return fileWithTypes;
+    const previousDir = {
+      name: '..',
+      type: 'dir',
+    };
+    return [previousDir, ...filesInfo];
   } catch (err) {
-    console.log(err);
+    return [];
   }
 };
-
-// getFiles(decodedURI);

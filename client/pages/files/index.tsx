@@ -84,7 +84,9 @@ const Files = () => {
   return (
     <>
       <div style={{ width: '100%', padding: '20px' }}>
-        {files && <FileTable data={files.files} onFileClick={onFileClick} />}
+        {files && files.files && (
+          <FileTable data={files.files} onFileClick={onFileClick} />
+        )}
       </div>
     </>
   );

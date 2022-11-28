@@ -18,7 +18,7 @@ fastify.register(autoLoad, {
   },
 });
 
-fastify.listen({ port: 3001 }, function (err, address) {
+fastify.listen({ port: 3001, host: '0.0.0.0' }, function (err, address) {
   if (err) {
     fastify.log.error(err);
     process.exit(1);
