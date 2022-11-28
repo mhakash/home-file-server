@@ -5,7 +5,7 @@ import fs from 'fs';
 
 import { getFiles } from '../test';
 
-const fileRoute = async (fastify: FastifyInstance, options: FastifyPluginOptions) => {
+const filesRoute = async (fastify: FastifyInstance, options: FastifyPluginOptions) => {
   fastify.get('/', {}, async (request, reply) => {
     return { hello: 'world' };
   });
@@ -14,7 +14,7 @@ const fileRoute = async (fastify: FastifyInstance, options: FastifyPluginOptions
     const q = req.query as any;
     const files = await getFiles(q['f']);
 
-    return { pong: 'it worked!', files };
+    return { pong: 'it worked!', q, files };
   });
 
   fastify.post('/files', async function (req, reply) {
@@ -48,4 +48,4 @@ const fileRoute = async (fastify: FastifyInstance, options: FastifyPluginOptions
   });
 };
 
-export default fileRoute;
+export default filesRoute;

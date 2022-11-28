@@ -4,6 +4,7 @@ import { http } from '../api/http';
 export type File = {
   name: string;
   type?: 'file' | 'dir';
+  fileType?: string;
 };
 
 const getFiles = async (url: string) => {

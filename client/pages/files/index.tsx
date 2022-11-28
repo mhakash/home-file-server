@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Group, ScrollArea, Table, Text } from '@mantine/core';
+import { Group, ScrollArea, Table, Text, ActionIcon } from '@mantine/core';
 import { IconFileDescription, IconFolder } from '@tabler/icons';
 import { File, useFiles } from '../../lib/hooks/useFiles';
 
@@ -8,6 +8,15 @@ interface FileTableProps {
   data: File[];
   onFileClick: (file: File) => any;
 }
+
+const openableExt = ['.html', '.htm'];
+
+const getRouteByExt = (ext: string, query: string): string => {
+  const prefix = '/views/html?f=';
+
+  if (ext === '.html' || ext === '.htm') return prefix + query;
+  else return prefix + query;
+};
 
 const FileTable = ({ data, onFileClick }: FileTableProps) => {
   const rows = data.map((e) => (
@@ -29,6 +38,12 @@ const FileTable = ({ data, onFileClick }: FileTableProps) => {
           <Group>
             <IconFileDescription size={25} stroke={1.5} />
             <Text size="sm">{e.name}</Text>
+
+            {e.fileType && openableExt.includes(e.fileType) && (
+              <ActionIcon onClick={() => onFileClick(e)}>
+                <IconFileDescription size={25} stroke={1.5} />
+              </ActionIcon>
+            )}
           </Group>
         )}
       </td>
@@ -59,7 +74,11 @@ const Files = () => {
 
   const onFileClick = (row: File) => {
     const query = q ?? '';
-    router.push('/files?f=' + query + '/' + row.name);
+    if (row.type === 'dir') {
+      router.push('/files?f=' + query + '/' + row.name);
+    } else {
+      router.push(getRouteByExt(row.fileType ?? '', query + '/' + row.name));
+    }
   };
 
   return (
