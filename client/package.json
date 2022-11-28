@@ -15,6 +15,7 @@
     "@mantine/dropzone": "^5.8.3",
     "@mantine/hooks": "^5.8.3",
     "@mantine/next": "^5.8.3",
+    "@mantine/prism": "^5.8.3",
     "@tabler/icons": "^1.113.0",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",

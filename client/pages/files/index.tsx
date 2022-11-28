@@ -9,14 +9,11 @@ interface FileTableProps {
   onFileClick: (file: File) => any;
 }
 
-const openableExt = ['.html', '.htm', '.txt', '.ts'];
-
 const getRouteByExt = (ext: string, query: string): string => {
   const prefix = '/views/';
 
   if (ext === '.html' || ext === '.htm') return prefix + 'html?f=' + query;
-  if (ext === '.txt' || ext === '.ts') return prefix + 'text?f=' + query;
-  else return prefix + query;
+  else return prefix + 'text?f=' + query;
 };
 
 const FileTable = ({ data, onFileClick }: FileTableProps) => {
@@ -43,7 +40,7 @@ const FileTable = ({ data, onFileClick }: FileTableProps) => {
         )}
       </td>
       <td>
-        {e.fileType && openableExt.includes(e.fileType) && (
+        {e.type === 'file' && (
           <Button onClick={() => onFileClick(e)} variant="light" size="xs">
             View
           </Button>

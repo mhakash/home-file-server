@@ -16,7 +16,11 @@ const HtmlPage = () => {
 
   return (
     <>
-      <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(data) }} />
+      <div
+        dangerouslySetInnerHTML={{
+          __html: DOMPurify.sanitize(data, { FORCE_BODY: true }),
+        }}
+      />
     </>
   );
 };

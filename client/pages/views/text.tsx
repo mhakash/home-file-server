@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useHtml } from '../../lib/hooks/useHtml';
+import { Prism } from '@mantine/prism';
 
 const TextViewerPage = () => {
   const router = useRouter();
@@ -15,8 +16,7 @@ const TextViewerPage = () => {
 
   return (
     <>
-      <pre>{data}</pre>
-      {/* <div dangerouslySetInnerHTML={{ __html: data }} /> */}
+      <Prism language="tsx">{data}</Prism>
     </>
   );
 };

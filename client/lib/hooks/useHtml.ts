@@ -2,7 +2,10 @@ import useSWR from 'swr';
 import { http } from '../api/http';
 
 const getHtmlFile = async (f: string) => {
-  const res = await http.get('/file/html', { params: { f } });
+  const res = await http.get('/file/html', {
+    params: { f },
+    responseType: 'text',
+  });
   return res.data;
 };
 
