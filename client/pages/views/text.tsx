@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useHtml } from '../../lib/hooks/useHtml';
 
-const HtmlPage = () => {
+const TextViewerPage = () => {
   const router = useRouter();
   const { f } = router.query;
 
@@ -15,9 +15,10 @@ const HtmlPage = () => {
 
   return (
     <>
-      <div dangerouslySetInnerHTML={{ __html: data }} />
+      <pre>{data}</pre>
+      {/* <div dangerouslySetInnerHTML={{ __html: data }} /> */}
     </>
   );
 };
 
-export default HtmlPage;
+export default TextViewerPage;

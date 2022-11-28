@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Group, ScrollArea, Table, Text, ActionIcon } from '@mantine/core';
+import { Group, ScrollArea, Table, Text, Button } from '@mantine/core';
 import { IconFileDescription, IconFolder } from '@tabler/icons';
 import { File, useFiles } from '../../lib/hooks/useFiles';
 
@@ -9,12 +9,13 @@ interface FileTableProps {
   onFileClick: (file: File) => any;
 }
 
-const openableExt = ['.html', '.htm'];
+const openableExt = ['.html', '.htm', '.txt', '.ts'];
 
 const getRouteByExt = (ext: string, query: string): string => {
-  const prefix = '/views/html?f=';
+  const prefix = '/views/';
 
-  if (ext === '.html' || ext === '.htm') return prefix + query;
+  if (ext === '.html' || ext === '.htm') return prefix + 'html?f=' + query;
+  if (ext === '.txt' || ext === '.ts') return prefix + 'text?f=' + query;
   else return prefix + query;
 };
 
@@ -38,13 +39,14 @@ const FileTable = ({ data, onFileClick }: FileTableProps) => {
           <Group>
             <IconFileDescription size={25} stroke={1.5} />
             <Text size="sm">{e.name}</Text>
-
-            {e.fileType && openableExt.includes(e.fileType) && (
-              <ActionIcon onClick={() => onFileClick(e)}>
-                <IconFileDescription size={25} stroke={1.5} />
-              </ActionIcon>
-            )}
           </Group>
+        )}
+      </td>
+      <td>
+        {e.fileType && openableExt.includes(e.fileType) && (
+          <Button onClick={() => onFileClick(e)} variant="light" size="xs">
+            View
+          </Button>
         )}
       </td>
     </tr>
@@ -56,6 +58,7 @@ const FileTable = ({ data, onFileClick }: FileTableProps) => {
         <thead>
           <tr>
             <th>Item Name</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>
@@ -83,7 +86,7 @@ const Files = () => {
 
   return (
     <>
-      <div>
+      <div style={{ width: '100%', padding: '20px' }}>
         {files && <FileTable data={files.files} onFileClick={onFileClick} />}
       </div>
     </>
