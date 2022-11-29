@@ -2,6 +2,7 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { MantineProvider } from '@mantine/core';
 import '../styles/globals.css';
+import { RouterTransition } from '../components/RouterTransition';
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -16,14 +17,8 @@ export default function App(props: AppProps) {
         />
       </Head>
 
-      <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
-        theme={{
-          /** Put your mantine theme override here */
-          colorScheme: 'light',
-        }}
-      >
+      <MantineProvider withGlobalStyles withNormalizeCSS>
+        <RouterTransition />
         <Component {...pageProps} />
       </MantineProvider>
     </>

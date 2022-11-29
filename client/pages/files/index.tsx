@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { Group, ScrollArea, Table, Text, Button } from '@mantine/core';
 import { IconFileDescription, IconFolder } from '@tabler/icons';
 import { File, useFiles } from '../../lib/hooks/useFiles';
+import { FilesLayout } from '../../components/layouts/FilesLayout';
 
 interface FileTableProps {
   data: File[];
@@ -51,7 +52,7 @@ const FileTable = ({ data, onFileClick }: FileTableProps) => {
 
   return (
     <ScrollArea>
-      <Table sx={{ minWidth: 800 }} verticalSpacing="sm">
+      <Table sx={{}} verticalSpacing="sm">
         <thead>
           <tr>
             <th>Item Name</th>
@@ -82,13 +83,11 @@ const Files = () => {
   };
 
   return (
-    <>
-      <div style={{ width: '100%', padding: '20px' }}>
-        {files && files.files && (
-          <FileTable data={files.files} onFileClick={onFileClick} />
-        )}
-      </div>
-    </>
+    <FilesLayout>
+      {files && files.files && (
+        <FileTable data={files.files} onFileClick={onFileClick} />
+      )}
+    </FilesLayout>
   );
 };
 

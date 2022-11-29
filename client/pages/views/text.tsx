@@ -16,7 +16,9 @@ const TextViewerPage = () => {
 
   return (
     <>
-      <Prism language="tsx">{data}</Prism>
+      <Prism language="tsx" withLineNumbers={true}>
+        {data}
+      </Prism>
     </>
   );
 };
