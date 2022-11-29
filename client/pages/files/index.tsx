@@ -4,6 +4,7 @@ import { Group, ScrollArea, Table, Text, Button } from '@mantine/core';
 import { IconFileDescription, IconFolder } from '@tabler/icons';
 import { File, useFiles } from '../../lib/hooks/useFiles';
 import { FilesLayout } from '../../components/layouts/FilesLayout';
+import { normalizeQuery } from '../../lib/utils';
 
 interface FileTableProps {
   data: File[];
@@ -69,9 +70,9 @@ const Files = () => {
   const router = useRouter();
   const { f } = router.query;
 
-  const q = Array.isArray(f) ? f[0] : f;
+  const q = normalizeQuery(f);
 
-  const { files } = useFiles(q ?? '');
+  const { files } = useFiles(q);
 
   const onFileClick = (row: File) => {
     const query = q ?? '';
