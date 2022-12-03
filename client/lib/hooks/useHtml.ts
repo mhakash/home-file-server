@@ -1,9 +1,10 @@
 import axios from 'axios';
 import useSWR from 'swr';
+import { getHostFromStore } from '../utils';
 // import { http } from '../api/http';
 
 const getHtmlFile = async (f: string) => {
-  const host = localStorage.getItem('host')?.replace(/(^"|"$)/g, '');
+  const host = getHostFromStore();
 
   const res = await axios.get('/file/html', {
     baseURL: host + '/api/v1',

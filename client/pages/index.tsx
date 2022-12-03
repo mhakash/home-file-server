@@ -8,7 +8,7 @@ import { useInputState, useLocalStorage } from '@mantine/hooks';
 import Link from 'next/link';
 
 const http = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: 'http://localhost:3001/api/v1',
   headers: {
     'Content-type': 'application/json',
   },
@@ -18,8 +18,9 @@ const upload = (file: any, onUploadProgress: any) => {
   let formData = new FormData();
 
   formData.append('file', file);
+  formData.append('url', 'myurl');
 
-  return http.post('/', formData, {
+  return http.post('/files', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -126,9 +127,9 @@ export default function Home() {
   return (
     <div>
       <div>host: {host}</div>
-      {/* <div style={{ maxWidth: "800px" }}>
+      <div style={{ maxWidth: '800px' }}>
         <BaseDemo />
-      </div> */}
+      </div>
       <Link href={'/files'}>View files</Link>
 
       <div className="max-w-xl p-4">

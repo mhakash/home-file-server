@@ -5,10 +5,11 @@ import { IconFileDescription, IconFolder } from '@tabler/icons';
 import { File, useFiles } from '../../lib/hooks/useFiles';
 import { FilesLayout } from '../../components/layouts/FilesLayout';
 import { normalizeQuery } from '../../lib/utils';
+import Link from 'next/link';
 
 interface FileTableProps {
   data: File[];
-  onFileClick: (file: File) => any;
+  getLink: (file: File) => any;
 }
 
 const getRouteByExt = (ext: string, query: string): string => {
@@ -18,34 +19,26 @@ const getRouteByExt = (ext: string, query: string): string => {
   else return prefix + 'text?f=' + query;
 };
 
-const FileTable = ({ data, onFileClick }: FileTableProps) => {
+const FileTable = ({ data, getLink }: FileTableProps) => {
   const rows = data.map((e) => (
     <tr key={e.name}>
       <td>
         {e.type === 'dir' ? (
-          <Group
-            onClick={() => onFileClick(e)}
-            sx={{
-              '&:hover': {
-                cursor: 'pointer',
-              },
-            }}
-          >
-            <IconFolder size={25} stroke={1.5} />
-            <Text>{e.name}</Text>
-          </Group>
+          <Link href={getLink(e)} className="text-inherit no-underline">
+            <Group className="group">
+              <IconFolder size={25} stroke={1.5} />
+              <Text className="group-hover:text-sky-600">{e.name}</Text>
+            </Group>
+          </Link>
         ) : (
           <Group>
             <IconFileDescription size={25} stroke={1.5} />
-            <Text size="sm">{e.name}</Text>
+            <Link href={getLink(e)} className="text-inherit no-underline">
+              <Text size="sm" className="hover:underline decoration-sky-500">
+                {e.name}
+              </Text>
+            </Link>
           </Group>
-        )}
-      </td>
-      <td>
-        {e.type === 'file' && (
-          <Button onClick={() => onFileClick(e)} variant="light" size="xs">
-            View
-          </Button>
         )}
       </td>
     </tr>
@@ -57,7 +50,6 @@ const FileTable = ({ data, onFileClick }: FileTableProps) => {
         <thead>
           <tr>
             <th>Item Name</th>
-            <th></th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>
@@ -74,19 +66,19 @@ const Files = () => {
 
   const { files } = useFiles(q);
 
-  const onFileClick = (row: File) => {
+  const getLink = (row: File): string => {
     const query = q ?? '';
     if (row.type === 'dir') {
-      router.push('/files?f=' + query + '/' + row.name);
+      return '/files?f=' + query + '/' + row.name;
     } else {
-      router.push(getRouteByExt(row.fileType ?? '', query + '/' + row.name));
+      return getRouteByExt(row.fileType ?? '', query + '/' + row.name);
     }
   };
 
   return (
     <FilesLayout>
       {files && files.files && (
-        <FileTable data={files.files} onFileClick={onFileClick} />
+        <FileTable data={files.files} getLink={getLink} />
       )}
     </FilesLayout>
   );

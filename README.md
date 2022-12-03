@@ -25,3 +25,5 @@ libraries / technologies used:
 - fastify
 - nextjs
 - mantine ui
+- tailwindcss
+

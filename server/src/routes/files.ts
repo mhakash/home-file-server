@@ -4,6 +4,7 @@ import { pipeline } from 'stream';
 import fs from 'fs';
 
 import { getFiles } from '../test';
+import path from 'path';
 
 const filesRoute = async (fastify: FastifyInstance, options: FastifyPluginOptions) => {
   fastify.get('/', {}, async (request, reply) => {
@@ -22,9 +23,10 @@ const filesRoute = async (fastify: FastifyInstance, options: FastifyPluginOption
     // also, consider that if you allow to upload multiple files
     // you must consume all files otherwise the promise will never fulfill
     const pump = util.promisify(pipeline);
-    const data: any = await req.file();
+    const data = await req.file();
+    console.log(data?.fields?.url);
 
-    console.log(data?.file); // stream
+    // data.file // stream
     // data.fields; // other parsed parts
     // data.fieldname;
     // data.filename;
@@ -37,14 +39,16 @@ const filesRoute = async (fastify: FastifyInstance, options: FastifyPluginOption
     //
     // or
 
-    await pump(data.file, fs.createWriteStream(data.filename));
+    if (data) {
+      await pump(data.file, fs.createWriteStream(path.join('draft', data.filename)));
 
-    // be careful of permission issues on disk and not overwrite
-    // sensitive files that could cause security risks
+      // be careful of permission issues on disk and not overwrite
+      // sensitive files that could cause security risks
 
-    // also, consider that if the file stream is not consumed, the promise will never fulfill
+      // also, consider that if the file stream is not consumed, the promise will never fulfill
 
-    reply.send();
+      reply.send();
+    }
   });
 };
 
