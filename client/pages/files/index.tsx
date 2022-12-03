@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { useRouter } from 'next/router';
-import { Group, ScrollArea, Table, Text, Button } from '@mantine/core';
+import { Group, ScrollArea, Table, Text, Breadcrumbs } from '@mantine/core';
 import { IconFileDescription, IconFolder } from '@tabler/icons';
 import { File, useFiles } from '../../lib/hooks/useFiles';
 import { FilesLayout } from '../../components/layouts/FilesLayout';
-import { normalizeQuery } from '../../lib/utils';
+import { normalizeQuery, pathJoin } from '../../lib/utils';
 import Link from 'next/link';
+import { useId } from '@mantine/hooks';
 
 interface FileTableProps {
   data: File[];
@@ -58,28 +59,55 @@ const FileTable = ({ data, getLink }: FileTableProps) => {
   );
 };
 
+const breadCrumbItems = (q: string, id: string) => {
+  const parts = q.split('/');
+
+  const items = parts.map((e, i) => {
+    if (!e) return null;
+
+    const href = pathJoin(...parts.slice(0, i + 1));
+    return (
+      <Link
+        href={'/files?f=' + href}
+        key={id + i}
+        className="no-underline text-inherit hover:underline"
+      >
+        <Text>{e}</Text>
+      </Link>
+    );
+  });
+
+  return items;
+};
+
 const Files = () => {
+  const id = useId();
+
   const router = useRouter();
   const { f } = router.query;
-
   const q = normalizeQuery(f);
-
   const { files } = useFiles(q);
 
   const getLink = (row: File): string => {
     const query = q ?? '';
     if (row.type === 'dir') {
-      return '/files?f=' + query + '/' + row.name;
+      return '/files?f=' + pathJoin(query, row.name);
     } else {
-      return getRouteByExt(row.fileType ?? '', query + '/' + row.name);
+      return getRouteByExt(row.fileType ?? '', pathJoin(query, row.name));
     }
   };
 
   return (
     <FilesLayout>
-      {files && files.files && (
-        <FileTable data={files.files} getLink={getLink} />
-      )}
+      <Breadcrumbs className="m-4">
+        <Link href="/files">home</Link>
+        {breadCrumbItems(q, id)}
+      </Breadcrumbs>
+      <div>
+        {files && files.files && (
+          <FileTable data={files.files} getLink={getLink} />
+        )}
+      </div>
     </FilesLayout>
   );
 };
