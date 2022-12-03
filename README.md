@@ -6,7 +6,7 @@ Planned features
 
 - [x] navigate files
 - [x] add breadcrums for navigation
-- [x] view html and texl files
+- [x] view html and text files
 - [ ] download file
 - [ ] upload file(server done, fix client)
 - [ ] syntax highlighting based on file type
