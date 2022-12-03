@@ -15,6 +15,8 @@ Planned features
 - [ ] bookmark files and directories
 - [ ] edit text files
 - [ ] preview images
+- [ ] preview markdown file
+- [ ] view pdf file
 
 libraries / technologies used:
 

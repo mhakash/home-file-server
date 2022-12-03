@@ -86,7 +86,8 @@ const Files = () => {
   const router = useRouter();
   const { f } = router.query;
   const q = normalizeQuery(f);
-  const { files } = useFiles(q);
+  const { files: filesByQuery } = useFiles(q);
+  const files = filesByQuery?.files;
 
   const getLink = (row: File): string => {
     const query = q ?? '';
@@ -99,13 +100,18 @@ const Files = () => {
 
   return (
     <FilesLayout>
-      <Breadcrumbs className="m-4">
+      <Breadcrumbs className="m-4 flex flex-wrap">
         <Link href="/files">home</Link>
         {breadCrumbItems(q, id)}
       </Breadcrumbs>
       <div>
-        {files && files.files && (
-          <FileTable data={files.files} getLink={getLink} />
+        {files && (
+          <FileTable
+            data={files.sort((a, b) =>
+              a.name.localeCompare(b.name, undefined, { numeric: true })
+            )}
+            getLink={getLink}
+          />
         )}
       </div>
     </FilesLayout>
