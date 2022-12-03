@@ -1,4 +1,4 @@
-# home-file-server
+# not-only-a-file-server
 
 A file server for home. For personal use(not intended for production).
 
