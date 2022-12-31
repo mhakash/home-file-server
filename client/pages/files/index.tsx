@@ -104,6 +104,7 @@ const Files = () => {
         <Link href="/files">home</Link>
         {breadCrumbItems(q, id)}
       </Breadcrumbs>
+
       <div>
         {files && (
           <FileTable
