@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { MantineProvider } from '@mantine/core';
 import '../styles/globals.css';
 import { RouterTransition } from '../components/RouterTransition';
+import { NotificationsProvider } from '@mantine/notifications';
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -18,8 +19,10 @@ export default function App(props: AppProps) {
       </Head>
 
       <MantineProvider withGlobalStyles withNormalizeCSS>
-        <RouterTransition />
-        <Component {...pageProps} />
+        <NotificationsProvider>
+          <RouterTransition />
+          <Component {...pageProps} />
+        </NotificationsProvider>
       </MantineProvider>
     </>
   );
